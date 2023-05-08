@@ -9,23 +9,30 @@ public class BookOrderService {
 
     private final List<Book> books = new ArrayList<>();
 
-    public double getTotalPrice() {
-        long numberOfDistinctBooks = books.stream().distinct().count();
-
-        if(numberOfDistinctBooks == 3) {
-            double discount = (SINGLE_BOOK_PRICE * 3) / 100 * 10;
-            return (books.size() * SINGLE_BOOK_PRICE) - discount;
-        }
-
-        if(numberOfDistinctBooks == 2) {
-            double discount = (SINGLE_BOOK_PRICE * 2) / 100 * 5;
-            return (books.size() * SINGLE_BOOK_PRICE) - discount;
-        }
-
-        return books.size() * SINGLE_BOOK_PRICE;
-    }
-
     public void addBook(Book book) {
         this.books.add(book);
+    }
+
+    public double getTotalPrice() {
+        double discount = getDiscountAmount();
+
+        return (books.size() * SINGLE_BOOK_PRICE) - discount;
+    }
+
+    private double getDiscountAmount() {
+        long numberOfDistinctBooks = getDistinctBooksCount();
+
+        if(numberOfDistinctBooks == 3) {
+            return (SINGLE_BOOK_PRICE * 3) * 0.10;
+        }
+        if (numberOfDistinctBooks == 2) {
+            return (SINGLE_BOOK_PRICE * 2) * 0.05;
+        }
+
+        return 0;
+    }
+
+    private long getDistinctBooksCount() {
+        return books.stream().distinct().count();
     }
 }
