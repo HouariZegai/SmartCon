@@ -29,4 +29,11 @@ class BookOrderTest {
         bookOrderService.addBook(book);
         assertEquals(50d, bookOrderService.getTotalPrice());
     }
+
+    @Test
+    void buySameBookTwiceTotal100EUR() {
+        bookOrderService.addBook(Book.CLEAN_CODE);
+        bookOrderService.addBook(Book.CLEAN_CODE);
+        assertEquals(100d, bookOrderService.getTotalPrice());
+    }
 }
