@@ -2,6 +2,8 @@ package com.katas.developmentbooks.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,9 +23,10 @@ class BookOrderTest {
         assertEquals(0d, bookOrderService.getTotalPrice());
     }
 
-    @Test
-    void buyOneBookTotal50() {
-        bookOrderService.addBook(Book.CLEAN_CODE);
+    @ParameterizedTest
+    @EnumSource(Book.class)
+    void buyOneBookTotal50(Book book) {
+        bookOrderService.addBook(book);
         assertEquals(50d, bookOrderService.getTotalPrice());
     }
 }
