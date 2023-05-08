@@ -19,13 +19,13 @@ class BookOrderTest {
     }
 
     @Test
-    void buyNoBookTotalZero() {
+    void buyNoBookTotal0EUR() {
         assertEquals(0d, bookOrderService.getTotalPrice());
     }
 
     @ParameterizedTest
     @EnumSource(Book.class)
-    void buyOneBookTotal50(Book book) {
+    void buyOneBookTotal50EUR(Book book) {
         bookOrderService.addBook(book);
         assertEquals(50d, bookOrderService.getTotalPrice());
     }
