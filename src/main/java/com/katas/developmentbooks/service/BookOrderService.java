@@ -10,6 +10,13 @@ public class BookOrderService {
     private final List<Book> books = new ArrayList<>();
 
     public double getTotalPrice() {
+        long numberOfDistinctBooks = books.stream().distinct().count();
+
+        if(numberOfDistinctBooks == 2) {
+            double discount = (SINGLE_BOOK_PRICE * 2) / 100 * 5;
+            return (books.size() * SINGLE_BOOK_PRICE) - discount;
+        }
+
         return books.size() * SINGLE_BOOK_PRICE;
     }
 
