@@ -13,4 +13,12 @@ class BookOrderTest {
         BookOrderService bookOrderService = new BookOrderService();
         assertEquals(0d, bookOrderService.getTotalPrice());
     }
+
+    @Test
+    void buyOneBookTotal50() {
+        BookOrderService bookOrderService = new BookOrderService();
+        bookOrderService.addBook(Book.CLEAN_CODE);
+
+        assertEquals(50d, bookOrderService.getTotalPrice());
+    }
 }
