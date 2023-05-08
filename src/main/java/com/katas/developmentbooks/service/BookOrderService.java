@@ -1,19 +1,19 @@
 package com.katas.developmentbooks.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class BookOrderService {
 
     private static final double SINGLE_BOOK_PRICE = 50d;
 
-    private Book book;
+    private final List<Book> books = new ArrayList<>();
 
     public double getTotalPrice() {
-        if(book != null)
-            return SINGLE_BOOK_PRICE;
-
-        return 0d;
+        return books.size() * SINGLE_BOOK_PRICE;
     }
 
     public void addBook(Book book) {
-        this.book = book;
+        this.books.add(book);
     }
 }
