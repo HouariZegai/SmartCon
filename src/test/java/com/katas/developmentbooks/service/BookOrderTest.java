@@ -77,4 +77,14 @@ class BookOrderTest {
         bookOrderService.addBook(Book.WORKING_EFFECTIVELY_WITH_LEGACY_CODE);
         assertEquals(160d, bookOrderService.getTotalPrice());
     }
+
+    @Test
+    void buyFiveBookWithFourDifferentBooksThenGet20PercentDiscountForTheFourDifferentBooksOnly() {
+        bookOrderService.addBook(Book.CLEAN_CODE);
+        bookOrderService.addBook(Book.CLEAN_CODER);
+        bookOrderService.addBook(Book.CLEAN_ARCHITECTURE);
+        bookOrderService.addBook(Book.TEST_DRIVEN_DEVELOPMENT);
+        bookOrderService.addBook(Book.TEST_DRIVEN_DEVELOPMENT);
+        assertEquals(210d, bookOrderService.getTotalPrice());
+    }
 }
