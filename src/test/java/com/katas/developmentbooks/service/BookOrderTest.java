@@ -51,4 +51,12 @@ class BookOrderTest {
         bookOrderService.addBook(Book.CLEAN_ARCHITECTURE);
         assertEquals(145d, bookOrderService.getTotalPrice());
     }
+
+    @Test
+    void buyThreeDifferentBooksThenGet10PercentDiscount() {
+        bookOrderService.addBook(Book.CLEAN_CODE);
+        bookOrderService.addBook(Book.CLEAN_ARCHITECTURE);
+        bookOrderService.addBook(Book.TEST_DRIVEN_DEVELOPMENT);
+        assertEquals(135d, bookOrderService.getTotalPrice());
+    }
 }
