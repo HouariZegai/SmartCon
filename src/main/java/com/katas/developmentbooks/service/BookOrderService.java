@@ -22,6 +22,9 @@ public class BookOrderService {
     private double getDiscountAmount() {
         long numberOfDistinctBooks = getDistinctBooksCount();
 
+        if(numberOfDistinctBooks == 5) {
+            return (SINGLE_BOOK_PRICE * 5) * 0.25;
+        }
         if(numberOfDistinctBooks == 4) {
             return (SINGLE_BOOK_PRICE * 4) * 0.20;
         }
