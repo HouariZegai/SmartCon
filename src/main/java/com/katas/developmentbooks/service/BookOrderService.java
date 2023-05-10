@@ -1,14 +1,15 @@
 package com.katas.developmentbooks.service;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 public class BookOrderService {
 
     private static final double SINGLE_BOOK_PRICE = 50d;
 
-    private final List<Book> books = new ArrayList<>();
-
     private final List<Discount> discounts;
+
+    private final List<Book> books = new ArrayList<>();
 
     public BookOrderService(List<Discount> discounts) {
         this.discounts = discounts;
@@ -24,19 +25,40 @@ public class BookOrderService {
     }
 
     public double getTotalPrice() {
-        double discount = getDiscountAmount();
+        Stream<Discount> applicableDiscounts = getApplicableDiscounts();
 
-        return (books.size() * SINGLE_BOOK_PRICE) - discount;
+        double bestDiscountAmount = applicableDiscounts.mapToDouble(this::getDiscountAmountByAmount).max().orElse(0);
+
+        return (books.size() * SINGLE_BOOK_PRICE) - bestDiscountAmount;
     }
 
-    private double getDiscountAmount() {
-        long numberOfDistinctBooks = getDistinctBooksCount();
+    private double getDiscountAmountByAmount(Discount discount) {
+        int numberOfSet = 0;
 
-        return discounts.stream()
-                .filter(discount -> discount.numberOfDifferentBooks() <= numberOfDistinctBooks)
-                .findFirst()
-                .map(discount -> (SINGLE_BOOK_PRICE * discount.numberOfDifferentBooks()) * discount.percentage())
-                .orElse(0d);
+        int discountBooksNumber = discount.numberOfDifferentBooks();
+        List<Book> clonedBooks = new ArrayList<>(books);
+        boolean newSetFound;
+        do {
+            newSetFound = false;
+            Set<Book> set = new HashSet<>(discountBooksNumber);
+            for (Book book : clonedBooks) {
+                set.add(book);
+                if (set.size() == discountBooksNumber) {
+                    newSetFound = true;
+                    numberOfSet += 1;
+                    break;
+                }
+            }
+            set.forEach(clonedBooks::remove);
+
+        } while (newSetFound);
+
+        return (SINGLE_BOOK_PRICE * discountBooksNumber) * discount.percentage() * numberOfSet;
+    }
+
+    private Stream<Discount> getApplicableDiscounts() {
+        long numberOfDistinctBooks = getDistinctBooksCount();
+        return discounts.stream().filter(discount -> numberOfDistinctBooks >= discount.numberOfDifferentBooks());
     }
 
     private long getDistinctBooksCount() {
