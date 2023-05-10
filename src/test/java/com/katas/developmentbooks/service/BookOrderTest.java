@@ -1,5 +1,6 @@
 package com.katas.developmentbooks.service;
 
+import com.katas.developmentbooks.model.Book;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

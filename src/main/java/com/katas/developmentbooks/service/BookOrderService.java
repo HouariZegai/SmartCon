@@ -1,5 +1,8 @@
 package com.katas.developmentbooks.service;
 
+import com.katas.developmentbooks.model.Book;
+import com.katas.developmentbooks.model.Discount;
+
 import java.util.*;
 import java.util.stream.Stream;
 

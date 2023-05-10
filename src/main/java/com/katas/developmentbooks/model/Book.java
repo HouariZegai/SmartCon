@@ -1,4 +1,4 @@
-package com.katas.developmentbooks.service;
+package com.katas.developmentbooks.model;
 
 public enum Book {
     CLEAN_CODE, CLEAN_CODER, CLEAN_ARCHITECTURE, TEST_DRIVEN_DEVELOPMENT, WORKING_EFFECTIVELY_WITH_LEGACY_CODE

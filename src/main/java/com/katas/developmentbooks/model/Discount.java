@@ -1,4 +1,4 @@
-package com.katas.developmentbooks.service;
+package com.katas.developmentbooks.model;
 
 public record Discount (int numberOfDifferentBooks, double percentage) {
 }
