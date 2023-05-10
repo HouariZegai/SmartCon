@@ -2,17 +2,18 @@ package com.katas.developmentbooks.service;
 
 import com.katas.developmentbooks.model.Book;
 import com.katas.developmentbooks.model.Discount;
+import com.katas.developmentbooks.model.ShoppingCart;
 
 import java.util.*;
 import java.util.stream.Stream;
 
-public class BookPriceCalculator {
+public class BookPriceCalculatorService {
 
     private static final double SINGLE_BOOK_PRICE = 50d;
 
     private final List<Discount> discounts;
 
-    public BookPriceCalculator(List<Discount> discounts) {
+    public BookPriceCalculatorService(List<Discount> discounts) {
         this.discounts = discounts;
     }
 

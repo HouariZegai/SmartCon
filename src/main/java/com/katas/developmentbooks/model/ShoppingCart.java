@@ -1,6 +1,4 @@
-package com.katas.developmentbooks.service;
-
-import com.katas.developmentbooks.model.Book;
+package com.katas.developmentbooks.model;
 
 import java.util.ArrayList;
 import java.util.List;
