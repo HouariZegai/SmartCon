@@ -1,24 +1,22 @@
-package com.katas.developmentbooks.service.impl;
+package com.katas.developmentbooks.service;
 
 import com.katas.developmentbooks.model.Book;
 import com.katas.developmentbooks.model.Discount;
 import com.katas.developmentbooks.model.ShoppingCart;
-import com.katas.developmentbooks.service.BooksPriceCalculatorService;
 
 import java.util.*;
 import java.util.stream.Stream;
 
-public class BooksPriceCalculatorServiceImpl implements BooksPriceCalculatorService {
+public class Checkout {
 
     private static final double SINGLE_BOOK_PRICE = 50d;
 
     private final List<Discount> discounts;
 
-    public BooksPriceCalculatorServiceImpl(List<Discount> discounts) {
+    public Checkout(List<Discount> discounts) {
         this.discounts = discounts;
     }
 
-    @Override
     public double calculateTotal(ShoppingCart shoppingCart) {
         Stream<Discount> applicableDiscounts = getApplicableDiscounts(shoppingCart);
 

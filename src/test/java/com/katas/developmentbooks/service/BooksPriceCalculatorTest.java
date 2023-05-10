@@ -3,7 +3,6 @@ package com.katas.developmentbooks.service;
 import com.katas.developmentbooks.model.Book;
 import com.katas.developmentbooks.model.Discount;
 import com.katas.developmentbooks.model.ShoppingCart;
-import com.katas.developmentbooks.service.impl.BooksPriceCalculatorServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -18,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 class BooksPriceCalculatorTest {
 
-    private BooksPriceCalculatorService booksPriceCalculatorService;
+    private Checkout checkout;
 
     private final List<Discount> discounts = Arrays.asList(
             new Discount(5, 0.25),
@@ -29,13 +28,13 @@ class BooksPriceCalculatorTest {
 
     @BeforeEach
     void beforeEach() {
-        booksPriceCalculatorService = new BooksPriceCalculatorServiceImpl(discounts);
+        checkout = new Checkout(discounts);
     }
 
     @Test
     void buyNoBookTotal0EUR() {
         ShoppingCart shoppingCart = new ShoppingCart();
-        assertEquals(0d, booksPriceCalculatorService.calculateTotal(shoppingCart));
+        assertEquals(0d, checkout.calculateTotal(shoppingCart));
     }
 
     @ParameterizedTest
@@ -43,14 +42,14 @@ class BooksPriceCalculatorTest {
     void buyOneBookTotal50EUR(Book book) {
         ShoppingCart shoppingCart = new ShoppingCart().addBook(book);
 
-        assertEquals(50d, booksPriceCalculatorService.calculateTotal(shoppingCart));
+        assertEquals(50d, checkout.calculateTotal(shoppingCart));
     }
 
     @Test
     void buySameBookTwiceTotal100EUR() {
         ShoppingCart shoppingCart = new ShoppingCart().addBook(Book.CLEAN_CODE, 2);
 
-        assertEquals(100d, booksPriceCalculatorService.calculateTotal(shoppingCart));
+        assertEquals(100d, checkout.calculateTotal(shoppingCart));
     }
 
     @Test
@@ -59,7 +58,7 @@ class BooksPriceCalculatorTest {
                 .addBook(Book.CLEAN_CODE)
                 .addBook(Book.CLEAN_ARCHITECTURE);
 
-        assertEquals(95d, booksPriceCalculatorService.calculateTotal(shoppingCart));
+        assertEquals(95d, checkout.calculateTotal(shoppingCart));
     }
 
     @Test
@@ -68,7 +67,7 @@ class BooksPriceCalculatorTest {
                 .addBook(Book.CLEAN_CODE, 2)
                 .addBook(Book.CLEAN_ARCHITECTURE);
 
-        assertEquals(145d, booksPriceCalculatorService.calculateTotal(shoppingCart));
+        assertEquals(145d, checkout.calculateTotal(shoppingCart));
     }
 
     @Test
@@ -77,7 +76,7 @@ class BooksPriceCalculatorTest {
                 .addBook(Book.CLEAN_ARCHITECTURE)
                 .addBook(Book.TEST_DRIVEN_DEVELOPMENT);
 
-        assertEquals(135d, booksPriceCalculatorService.calculateTotal(shoppingCart));
+        assertEquals(135d, checkout.calculateTotal(shoppingCart));
     }
 
     @Test
@@ -86,7 +85,7 @@ class BooksPriceCalculatorTest {
                 .addBook(Book.CLEAN_ARCHITECTURE, 2)
                 .addBook(Book.TEST_DRIVEN_DEVELOPMENT);
 
-        assertEquals(185d, booksPriceCalculatorService.calculateTotal(shoppingCart));
+        assertEquals(185d, checkout.calculateTotal(shoppingCart));
     }
 
     @Test
@@ -96,7 +95,7 @@ class BooksPriceCalculatorTest {
                 .addBook(Book.TEST_DRIVEN_DEVELOPMENT)
                 .addBook(Book.WORKING_EFFECTIVELY_WITH_LEGACY_CODE);
 
-        assertEquals(160d, booksPriceCalculatorService.calculateTotal(shoppingCart));
+        assertEquals(160d, checkout.calculateTotal(shoppingCart));
     }
 
     @Test
@@ -106,7 +105,7 @@ class BooksPriceCalculatorTest {
                 .addBook(Book.CLEAN_ARCHITECTURE)
                 .addBook(Book.TEST_DRIVEN_DEVELOPMENT, 2);
 
-        assertEquals(210d, booksPriceCalculatorService.calculateTotal(shoppingCart));
+        assertEquals(210d, checkout.calculateTotal(shoppingCart));
     }
 
     @Test
@@ -117,7 +116,7 @@ class BooksPriceCalculatorTest {
                 .addBook(Book.TEST_DRIVEN_DEVELOPMENT)
                 .addBook(Book.WORKING_EFFECTIVELY_WITH_LEGACY_CODE);
 
-        assertEquals(187.5, booksPriceCalculatorService.calculateTotal(shoppingCart));
+        assertEquals(187.5, checkout.calculateTotal(shoppingCart));
     }
 
     @Test
@@ -128,17 +127,28 @@ class BooksPriceCalculatorTest {
                 .addBook(Book.TEST_DRIVEN_DEVELOPMENT)
                 .addBook(Book.WORKING_EFFECTIVELY_WITH_LEGACY_CODE, 2);
 
-        assertEquals(237.5, booksPriceCalculatorService.calculateTotal(shoppingCart));
+        assertEquals(237.5, checkout.calculateTotal(shoppingCart));
     }
 
     @Test
     void buyEightBooksWithTwoDiscountPossibilitiesThenGetBestPrice() {
-        ShoppingCart shoppingCart = new ShoppingCart().addBook(Book.CLEAN_CODE, 2)
+        ShoppingCart shoppingCart = new ShoppingCart()
+                .addBook(Book.CLEAN_CODE, 2)
                 .addBook(Book.CLEAN_CODER, 2)
                 .addBook(Book.CLEAN_ARCHITECTURE, 2)
                 .addBook(Book.TEST_DRIVEN_DEVELOPMENT)
                 .addBook(Book.WORKING_EFFECTIVELY_WITH_LEGACY_CODE);
 
-        assertEquals(320d, booksPriceCalculatorService.calculateTotal(shoppingCart));
+        assertEquals(320d, checkout.calculateTotal(shoppingCart));
+    }
+
+    @Test
+    void buyTwoBooksWithTwoDiscountPossibilitiesThenGetBestPriceByMixingDifferentDiscount() {
+        ShoppingCart shoppingCart = new ShoppingCart()
+                .addBook(Book.CLEAN_CODE, 2)
+                .addBook(Book.CLEAN_CODER, 2)
+                .addBook(Book.TEST_DRIVEN_DEVELOPMENT, 1);
+
+        assertEquals(230d, checkout.calculateTotal(shoppingCart));
     }
 }
