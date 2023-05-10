@@ -6,17 +6,17 @@ import com.katas.developmentbooks.model.Discount;
 import java.util.*;
 import java.util.stream.Stream;
 
-public class BookOrderService {
+public class BookPriceCalculator {
 
     private static final double SINGLE_BOOK_PRICE = 50d;
 
     private final List<Discount> discounts;
 
-    public BookOrderService(List<Discount> discounts) {
+    public BookPriceCalculator(List<Discount> discounts) {
         this.discounts = discounts;
     }
 
-    public double getTotalPrice(ShoppingCart shoppingCart) {
+    public double calculateTotal(ShoppingCart shoppingCart) {
         Stream<Discount> applicableDiscounts = getApplicableDiscounts(shoppingCart);
 
         double bestDiscountAmount = applicableDiscounts

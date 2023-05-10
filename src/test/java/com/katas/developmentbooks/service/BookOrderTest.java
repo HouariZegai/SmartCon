@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 class BookOrderTest {
 
-    private BookOrderService bookOrderService;
+    private BookPriceCalculator bookPriceCalculator;
 
     private final List<Discount> discounts = Arrays.asList(
             new Discount(5, 0.25),
@@ -27,13 +27,13 @@ class BookOrderTest {
 
     @BeforeEach
     void beforeEach() {
-        bookOrderService = new BookOrderService(discounts);
+        bookPriceCalculator = new BookPriceCalculator(discounts);
     }
 
     @Test
     void buyNoBookTotal0EUR() {
         ShoppingCart shoppingCart = new ShoppingCart();
-        assertEquals(0d, bookOrderService.getTotalPrice(shoppingCart));
+        assertEquals(0d, bookPriceCalculator.calculateTotal(shoppingCart));
     }
 
     @ParameterizedTest
@@ -41,14 +41,14 @@ class BookOrderTest {
     void buyOneBookTotal50EUR(Book book) {
         ShoppingCart shoppingCart = new ShoppingCart().addBook(book);
 
-        assertEquals(50d, bookOrderService.getTotalPrice(shoppingCart));
+        assertEquals(50d, bookPriceCalculator.calculateTotal(shoppingCart));
     }
 
     @Test
     void buySameBookTwiceTotal100EUR() {
         ShoppingCart shoppingCart = new ShoppingCart().addBook(Book.CLEAN_CODE, 2);
 
-        assertEquals(100d, bookOrderService.getTotalPrice(shoppingCart));
+        assertEquals(100d, bookPriceCalculator.calculateTotal(shoppingCart));
     }
 
     @Test
@@ -57,7 +57,7 @@ class BookOrderTest {
                 .addBook(Book.CLEAN_CODE)
                 .addBook(Book.CLEAN_ARCHITECTURE);
 
-        assertEquals(95d, bookOrderService.getTotalPrice(shoppingCart));
+        assertEquals(95d, bookPriceCalculator.calculateTotal(shoppingCart));
     }
 
     @Test
@@ -66,7 +66,7 @@ class BookOrderTest {
                 .addBook(Book.CLEAN_CODE, 2)
                 .addBook(Book.CLEAN_ARCHITECTURE);
 
-        assertEquals(145d, bookOrderService.getTotalPrice(shoppingCart));
+        assertEquals(145d, bookPriceCalculator.calculateTotal(shoppingCart));
     }
 
     @Test
@@ -75,7 +75,7 @@ class BookOrderTest {
                 .addBook(Book.CLEAN_ARCHITECTURE)
                 .addBook(Book.TEST_DRIVEN_DEVELOPMENT);
 
-        assertEquals(135d, bookOrderService.getTotalPrice(shoppingCart));
+        assertEquals(135d, bookPriceCalculator.calculateTotal(shoppingCart));
     }
 
     @Test
@@ -84,7 +84,7 @@ class BookOrderTest {
                 .addBook(Book.CLEAN_ARCHITECTURE, 2)
                 .addBook(Book.TEST_DRIVEN_DEVELOPMENT);
 
-        assertEquals(185d, bookOrderService.getTotalPrice(shoppingCart));
+        assertEquals(185d, bookPriceCalculator.calculateTotal(shoppingCart));
     }
 
     @Test
@@ -94,7 +94,7 @@ class BookOrderTest {
                 .addBook(Book.TEST_DRIVEN_DEVELOPMENT)
                 .addBook(Book.WORKING_EFFECTIVELY_WITH_LEGACY_CODE);
 
-        assertEquals(160d, bookOrderService.getTotalPrice(shoppingCart));
+        assertEquals(160d, bookPriceCalculator.calculateTotal(shoppingCart));
     }
 
     @Test
@@ -104,7 +104,7 @@ class BookOrderTest {
                 .addBook(Book.CLEAN_ARCHITECTURE)
                 .addBook(Book.TEST_DRIVEN_DEVELOPMENT, 2);
 
-        assertEquals(210d, bookOrderService.getTotalPrice(shoppingCart));
+        assertEquals(210d, bookPriceCalculator.calculateTotal(shoppingCart));
     }
 
     @Test
@@ -115,7 +115,7 @@ class BookOrderTest {
                 .addBook(Book.TEST_DRIVEN_DEVELOPMENT)
                 .addBook(Book.WORKING_EFFECTIVELY_WITH_LEGACY_CODE);
 
-        assertEquals(187.5, bookOrderService.getTotalPrice(shoppingCart));
+        assertEquals(187.5, bookPriceCalculator.calculateTotal(shoppingCart));
     }
 
     @Test
@@ -126,7 +126,7 @@ class BookOrderTest {
                 .addBook(Book.TEST_DRIVEN_DEVELOPMENT)
                 .addBook(Book.WORKING_EFFECTIVELY_WITH_LEGACY_CODE, 2);
 
-        assertEquals(237.5, bookOrderService.getTotalPrice(shoppingCart));
+        assertEquals(237.5, bookPriceCalculator.calculateTotal(shoppingCart));
     }
 
     @Test
@@ -137,6 +137,6 @@ class BookOrderTest {
                 .addBook(Book.TEST_DRIVEN_DEVELOPMENT)
                 .addBook(Book.WORKING_EFFECTIVELY_WITH_LEGACY_CODE);
 
-        assertEquals(320d, bookOrderService.getTotalPrice(shoppingCart));
+        assertEquals(320d, bookPriceCalculator.calculateTotal(shoppingCart));
     }
 }
