@@ -3,18 +3,18 @@ package com.katas.developmentbooks.service.impl;
 import com.katas.developmentbooks.model.Book;
 import com.katas.developmentbooks.model.Discount;
 import com.katas.developmentbooks.model.ShoppingCart;
-import com.katas.developmentbooks.service.BookPriceCalculatorService;
+import com.katas.developmentbooks.service.BooksPriceCalculatorService;
 
 import java.util.*;
 import java.util.stream.Stream;
 
-public class BookPriceCalculatorServiceImpl implements BookPriceCalculatorService {
+public class BooksPriceCalculatorServiceImpl implements BooksPriceCalculatorService {
 
     private static final double SINGLE_BOOK_PRICE = 50d;
 
     private final List<Discount> discounts;
 
-    public BookPriceCalculatorServiceImpl(List<Discount> discounts) {
+    public BooksPriceCalculatorServiceImpl(List<Discount> discounts) {
         this.discounts = discounts;
     }
 
