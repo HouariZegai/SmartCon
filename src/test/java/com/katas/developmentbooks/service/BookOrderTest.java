@@ -3,6 +3,7 @@ package com.katas.developmentbooks.service;
 import com.katas.developmentbooks.model.Book;
 import com.katas.developmentbooks.model.Discount;
 import com.katas.developmentbooks.model.ShoppingCart;
+import com.katas.developmentbooks.service.impl.BookPriceCalculatorServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -28,7 +29,7 @@ class BookOrderTest {
 
     @BeforeEach
     void beforeEach() {
-        bookPriceCalculatorService = new BookPriceCalculatorService(discounts);
+        bookPriceCalculatorService = new BookPriceCalculatorServiceImpl(discounts);
     }
 
     @Test
