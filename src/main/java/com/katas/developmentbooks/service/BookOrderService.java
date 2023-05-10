@@ -29,7 +29,11 @@ public class BookOrderService {
 
         double bestDiscountAmount = applicableDiscounts.mapToDouble(this::getDiscountAmountByAmount).max().orElse(0);
 
-        return (books.size() * SINGLE_BOOK_PRICE) - bestDiscountAmount;
+        return getTotalPriceWithoutDiscount() - bestDiscountAmount;
+    }
+
+    private double getTotalPriceWithoutDiscount() {
+        return SINGLE_BOOK_PRICE * books.size();
     }
 
     private double getDiscountAmountByAmount(Discount discount) {
@@ -40,16 +44,17 @@ public class BookOrderService {
         boolean newSetFound;
         do {
             newSetFound = false;
-            Set<Book> set = new HashSet<>(discountBooksNumber);
+            Set<Book> theFoundedSet = new HashSet<>(discountBooksNumber);
+
             for (Book book : clonedBooks) {
-                set.add(book);
-                if (set.size() == discountBooksNumber) {
+                theFoundedSet.add(book);
+                if (theFoundedSet.size() == discountBooksNumber) {
                     newSetFound = true;
                     numberOfSet += 1;
                     break;
                 }
             }
-            set.forEach(clonedBooks::remove);
+            theFoundedSet.forEach(clonedBooks::remove);
 
         } while (newSetFound);
 
