@@ -32,8 +32,7 @@ class BookOrderTest {
 
     @Test
     void buySameBookTwiceTotal100EUR() {
-        bookOrderService.addBook(Book.CLEAN_CODE);
-        bookOrderService.addBook(Book.CLEAN_CODE);
+        bookOrderService.addBook(Book.CLEAN_CODE, 2);
         assertEquals(100d, bookOrderService.getTotalPrice());
     }
 
@@ -46,8 +45,7 @@ class BookOrderTest {
 
     @Test
     void buyThreeBooksWithTwoDifferentBooksThenGet5PercentDiscountForTheTwoDifferentBooksOnly() {
-        bookOrderService.addBook(Book.CLEAN_CODE);
-        bookOrderService.addBook(Book.CLEAN_CODE);
+        bookOrderService.addBook(Book.CLEAN_CODE, 2);
         bookOrderService.addBook(Book.CLEAN_ARCHITECTURE);
         assertEquals(145d, bookOrderService.getTotalPrice());
     }
@@ -63,8 +61,7 @@ class BookOrderTest {
     @Test
     void buyFourBookWithThreeDifferentBooksThenGet10PercentDiscountForTheThreeDifferentBooksOnly() {
         bookOrderService.addBook(Book.CLEAN_CODE);
-        bookOrderService.addBook(Book.CLEAN_ARCHITECTURE);
-        bookOrderService.addBook(Book.CLEAN_ARCHITECTURE);
+        bookOrderService.addBook(Book.CLEAN_ARCHITECTURE, 2);
         bookOrderService.addBook(Book.TEST_DRIVEN_DEVELOPMENT);
         assertEquals(185d, bookOrderService.getTotalPrice());
     }
@@ -83,8 +80,7 @@ class BookOrderTest {
         bookOrderService.addBook(Book.CLEAN_CODE);
         bookOrderService.addBook(Book.CLEAN_CODER);
         bookOrderService.addBook(Book.CLEAN_ARCHITECTURE);
-        bookOrderService.addBook(Book.TEST_DRIVEN_DEVELOPMENT);
-        bookOrderService.addBook(Book.TEST_DRIVEN_DEVELOPMENT);
+        bookOrderService.addBook(Book.TEST_DRIVEN_DEVELOPMENT, 2);
         assertEquals(210d, bookOrderService.getTotalPrice());
     }
 
@@ -104,8 +100,7 @@ class BookOrderTest {
         bookOrderService.addBook(Book.CLEAN_CODER);
         bookOrderService.addBook(Book.CLEAN_ARCHITECTURE);
         bookOrderService.addBook(Book.TEST_DRIVEN_DEVELOPMENT);
-        bookOrderService.addBook(Book.WORKING_EFFECTIVELY_WITH_LEGACY_CODE);
-        bookOrderService.addBook(Book.WORKING_EFFECTIVELY_WITH_LEGACY_CODE);
+        bookOrderService.addBook(Book.WORKING_EFFECTIVELY_WITH_LEGACY_CODE, 2);
         assertEquals(237.5, bookOrderService.getTotalPrice());
     }
 }

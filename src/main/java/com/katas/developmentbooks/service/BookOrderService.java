@@ -13,6 +13,11 @@ public class BookOrderService {
         this.books.add(book);
     }
 
+    public void addBook(Book book, int quantity) {
+        for (int i = 0; i < quantity; i++)
+            this.books.add(book);
+    }
+
     public double getTotalPrice() {
         double discount = getDiscountAmount();
 
