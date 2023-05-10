@@ -6,6 +6,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
@@ -13,9 +16,16 @@ class BookOrderTest {
 
     private BookOrderService bookOrderService;
 
+    private final List<Discount> discounts = Arrays.asList(
+            new Discount(5, 0.25),
+            new Discount(4, 0.20),
+            new Discount(3, 0.10),
+            new Discount(2, 0.05)
+    );
+
     @BeforeEach
     void beforeEach() {
-        bookOrderService = new BookOrderService();
+        bookOrderService = new BookOrderService(discounts);
     }
 
     @Test

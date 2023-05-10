@@ -8,12 +8,11 @@ public class BookOrderService {
 
     private final List<Book> books = new ArrayList<>();
 
-    private List<Discount> discounts = Arrays.asList(
-            new Discount(5, 0.25),
-            new Discount(4, 0.20),
-            new Discount(3, 0.10),
-            new Discount(2, 0.05)
-    );
+    private final List<Discount> discounts;
+
+    public BookOrderService(List<Discount> discounts) {
+        this.discounts = discounts;
+    }
 
     public void addBook(Book book) {
         this.books.add(book);
