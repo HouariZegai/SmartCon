@@ -12,38 +12,29 @@ public class BookOrderService {
 
     private final List<Discount> discounts;
 
-    private final List<Book> books = new ArrayList<>();
-
     public BookOrderService(List<Discount> discounts) {
         this.discounts = discounts;
     }
 
-    public void addBook(Book book) {
-        this.books.add(book);
+    public double getTotalPrice(ShoppingCart shoppingCart) {
+        Stream<Discount> applicableDiscounts = getApplicableDiscounts(shoppingCart);
+
+        double bestDiscountAmount = applicableDiscounts
+                .mapToDouble(discount -> getDiscountAmountByAmountAndShoppingCart(discount, shoppingCart))
+                .max().orElse(0);
+
+        return getTotalPriceWithoutDiscount(shoppingCart) - bestDiscountAmount;
     }
 
-    public void addBook(Book book, int quantity) {
-        for (int i = 0; i < quantity; i++)
-            this.books.add(book);
+    private double getTotalPriceWithoutDiscount(ShoppingCart shoppingCart) {
+        return SINGLE_BOOK_PRICE * shoppingCart.getBooks().size();
     }
 
-    public double getTotalPrice() {
-        Stream<Discount> applicableDiscounts = getApplicableDiscounts();
-
-        double bestDiscountAmount = applicableDiscounts.mapToDouble(this::getDiscountAmountByAmount).max().orElse(0);
-
-        return getTotalPriceWithoutDiscount() - bestDiscountAmount;
-    }
-
-    private double getTotalPriceWithoutDiscount() {
-        return SINGLE_BOOK_PRICE * books.size();
-    }
-
-    private double getDiscountAmountByAmount(Discount discount) {
+    private double getDiscountAmountByAmountAndShoppingCart(Discount discount, ShoppingCart shoppingCart) {
         int numberOfSet = 0;
 
         int discountBooksNumber = discount.numberOfDifferentBooks();
-        List<Book> clonedBooks = new ArrayList<>(books);
+        List<Book> clonedBooks = new ArrayList<>(shoppingCart.getBooks());
         boolean newSetFound;
         do {
             newSetFound = false;
@@ -64,12 +55,12 @@ public class BookOrderService {
         return (SINGLE_BOOK_PRICE * discountBooksNumber) * discount.percentage() * numberOfSet;
     }
 
-    private Stream<Discount> getApplicableDiscounts() {
-        long numberOfDistinctBooks = getDistinctBooksCount();
+    private Stream<Discount> getApplicableDiscounts(ShoppingCart shoppingCart) {
+        long numberOfDistinctBooks = getDistinctBooksCount(shoppingCart);
         return discounts.stream().filter(discount -> numberOfDistinctBooks >= discount.numberOfDifferentBooks());
     }
 
-    private long getDistinctBooksCount() {
-        return books.stream().distinct().count();
+    private long getDistinctBooksCount(ShoppingCart shoppingCart) {
+        return shoppingCart.getBooks().stream().distinct().count();
     }
 }
