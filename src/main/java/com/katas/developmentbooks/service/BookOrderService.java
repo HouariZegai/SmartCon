@@ -1,13 +1,19 @@
 package com.katas.developmentbooks.service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class BookOrderService {
 
     private static final double SINGLE_BOOK_PRICE = 50d;
 
     private final List<Book> books = new ArrayList<>();
+
+    private List<Discount> discounts = Arrays.asList(
+            new Discount(5, 0.25),
+            new Discount(4, 0.20),
+            new Discount(3, 0.10),
+            new Discount(2, 0.05)
+    );
 
     public void addBook(Book book) {
         this.books.add(book);
@@ -27,20 +33,11 @@ public class BookOrderService {
     private double getDiscountAmount() {
         long numberOfDistinctBooks = getDistinctBooksCount();
 
-        if(numberOfDistinctBooks == 5) {
-            return (SINGLE_BOOK_PRICE * 5) * 0.25;
-        }
-        if(numberOfDistinctBooks == 4) {
-            return (SINGLE_BOOK_PRICE * 4) * 0.20;
-        }
-        if(numberOfDistinctBooks == 3) {
-            return (SINGLE_BOOK_PRICE * 3) * 0.10;
-        }
-        if (numberOfDistinctBooks == 2) {
-            return (SINGLE_BOOK_PRICE * 2) * 0.05;
-        }
-
-        return 0;
+        return discounts.stream()
+                .filter(discount -> discount.numberOfDifferentBooks() <= numberOfDistinctBooks)
+                .findFirst()
+                .map(discount -> (SINGLE_BOOK_PRICE * discount.numberOfDifferentBooks()) * discount.percentage())
+                .orElse(0d);
     }
 
     private long getDistinctBooksCount() {
